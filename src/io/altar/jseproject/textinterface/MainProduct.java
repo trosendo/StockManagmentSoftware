@@ -1,7 +1,5 @@
 package io.altar.jseproject.textinterface;
 
-import dnl.utils.text.table.TableRenderer;
-import dnl.utils.text.table.TextTable;
 import io.altar.jseproject.controller.ProductService;
 
 import java.util.ArrayList;
@@ -58,7 +56,6 @@ public class MainProduct {
     }
 
     private void createProduct() {
-        // TODO: 6/8/2018
         System.out.println("CREATE PRODUCT MENU");
         System.out.println("Insert Discount: ");
         int d = input.nextInt();
