@@ -50,29 +50,59 @@ public class MainProduct {
             } else if(op == LAST_MENU){
                 break;
             } else {
-                System.out.println("***INVALID INPUT***");
+                System.out.println("**********INVALID INPUT**********");
             }
         }
     }
 
     private void createProduct() {
-        System.out.println("CREATE PRODUCT MENU");
-        System.out.println("Insert Discount: ");
+        System.out.print("Inserir Desconto: ");
         int d = input.nextInt();
-        System.out.println("Insert IVA: ");
+        System.out.print("Inserir IVA: ");
         double iva = input.nextDouble();
-        System.out.println("Insert PVP: ");
+        System.out.print("Inserir PVP: ");
         double pvp = input.nextDouble();
         if(ProductService.createProduct(d, iva, pvp)){
-            System.out.println("PRODUCT SUCCESSFULLY");
+            System.out.println("PRODUCT SUCCESSFULLY ADDED");
         } else {
-            System.out.println("*******ERROR*******");
+            System.out.println("**********ERROR**********");
         }
     }
 
     private void editProduct() {
         // TODO: 6/8/2018
         System.out.println("EDIT PRODUCT MENU");
+        System.out.print("Inserir ID: ");
+        long id = input.nextLong();
+        ////////////////////
+        input.nextLine(); // Previous nextLong does not capture \n so the next nextLine is skipped because it captures the \n
+        //////////////////// this way we clear the input so no other is skipped
+        ////////////////////
+        String arr[] = ProductService.getProductDetails(id);
+        if(arr == null){
+            System.out.println("**********NO PRODUCT WITH ID " + id + "**********");
+            return;
+        }
+        int currentDiscount = Integer.parseInt(arr[0]);
+        double currentIVA = Double.parseDouble(arr[1]);
+        double currentPVP = Double.parseDouble(arr[2]);
+        System.out.format("Desconto atual é %d. Mudar para [vazio deixa o valor autal]: ", currentDiscount);
+        String scan = input.nextLine();
+        int discount = (scan.equals("")) ? currentDiscount : Integer.parseInt(scan);
+
+        System.out.format("IVA atual é %f. Mudar para [vazio deixa o valor autal]: ", currentIVA);
+        scan = input.nextLine();
+        double iva = (scan.equals("")) ? currentIVA : Double.parseDouble(scan);
+
+        System.out.format("PVP atual é %f. Mudar para [vazio deixa o valor autal]: ", currentIVA);
+        scan = input.nextLine();
+        double pvp = (scan.equals("")) ? currentPVP : Double.parseDouble(scan);
+
+        if(ProductService.editProduct(id, discount, iva, pvp)){
+            System.out.println("PRODUCT SUCESSFULLY EDITED");
+        } else {
+            System.out.println("**********ERROR EDITING PRODUCT**********");
+        }
     }
 
     private void getProductDetails() {
@@ -88,17 +118,17 @@ public class MainProduct {
 
     private void showProducts() {
         String header[] = {"ID", "DISCOUNT", "IVA", "PVP"};
-        String leftAling = "| %-5s | %-15s | %-15s | %-15s |\n";
+        String leftAlign = "| %-5s | %-15s | %-15s | %-15s |\n";
         ArrayList<String[]> temp = ProductService.getProducts();
         if(temp == null){
             return;
         }
         String separator = "+-------+-----------------+-----------------+-----------------+";
         System.out.println(separator);
-        System.out.format(leftAling, header);
+        System.out.format(leftAlign, header);
         System.out.println(separator);
         for(String[] t : temp){
-            System.out.format(leftAling, t[0], t[1], t[2], t[3]);
+            System.out.format(leftAlign, t[0], t[1], t[2], t[3]);
             System.out.println(separator);
         }
     }
