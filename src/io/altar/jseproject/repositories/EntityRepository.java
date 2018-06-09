@@ -10,17 +10,23 @@ public abstract class EntityRepository<T extends Entity> {
     LinkedHashMap<Long, T> database;
     long highestID;
 
+    public EntityRepository(){
+        database = new LinkedHashMap<>();
+        highestID = 0;
+    }
+
     private long nextID(){
         highestID++;
         return highestID;
     }
 
-    public long createEntity(T obj){
+    public T storeEntity(T obj){
         obj.setID(nextID());
-        return highestID;
+        database.put(obj.getID(), obj);
+        return database.get(obj.getID());
     }
 
-    public Collection<T> getEntity(){
+    public Collection<T> getValues(){
         return database.values();
     }
 
@@ -31,4 +37,6 @@ public abstract class EntityRepository<T extends Entity> {
     public T removeEntity(long id){
         return database.remove(id); // if no entity is found this returns null
     }
+
+
 }

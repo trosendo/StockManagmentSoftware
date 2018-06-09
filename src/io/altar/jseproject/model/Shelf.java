@@ -10,6 +10,11 @@ public class Shelf extends Entity {
     Product product;
     double dailyRent;
 
+    public Shelf(){
+        capacity = 0;
+        dailyRent = 0.0;
+    }
+
     public Shelf(int capacity, Product product, double dailyRent) {
 //        idGenerator = new IDGenerator();
 //        id = idGenerator.increment();
@@ -46,4 +51,8 @@ public class Shelf extends Entity {
         this.dailyRent = dailyRent;
     }
 
+    @Override
+    public boolean saveToDB() {
+        return false;
+    }
 }

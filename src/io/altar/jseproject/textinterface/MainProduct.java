@@ -1,23 +1,26 @@
 package io.altar.jseproject.textinterface;
 
-import io.altar.jseproject.model.Product;
+import dnl.utils.text.table.TableRenderer;
+import dnl.utils.text.table.TextTable;
+import io.altar.jseproject.controller.ProductService;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainProduct {
 
-    String menu = "Por favor selecione uma das seguintes opções:\n" +
+    private final String menu = "Por favor selecione uma das seguintes opções:\n" +
                         "1) Criar novo produto\n" +
                         "2) Editar um produto existente\n" +
                         "3) Consultar o detalhe de um produto\n" +
                         "4) Remover um produto\n" +
                         "5) Voltar ao ecrã anterior";
-    final int ERROR = -1;
-    final int CREATE_PRODUCT = 1;
-    final int EDIT_PRODUCT = 2;
-    final int PRODUCT_DETAILS = 3;
-    final int REMOVE_PRODUCT = 4;
-    final int LAST_MENU = 5;
+    private final int ERROR = -1;
+    private final int CREATE_PRODUCT = 1;
+    private final int EDIT_PRODUCT = 2;
+    private final int PRODUCT_DETAILS = 3;
+    private final int REMOVE_PRODUCT = 4;
+    private final int LAST_MENU = 5;
     Scanner input;
 
     MainProduct(){
@@ -57,6 +60,17 @@ public class MainProduct {
     private void createProduct() {
         // TODO: 6/8/2018
         System.out.println("CREATE PRODUCT MENU");
+        System.out.println("Insert Discount: ");
+        int d = input.nextInt();
+        System.out.println("Insert IVA: ");
+        double iva = input.nextDouble();
+        System.out.println("Insert PVP: ");
+        double pvp = input.nextDouble();
+        if(ProductService.createProduct(d, iva, pvp)){
+            System.out.println("PRODUCT SUCCESSFULLY");
+        } else {
+            System.out.println("*******ERROR*******");
+        }
     }
 
     private void editProduct() {
@@ -76,7 +90,20 @@ public class MainProduct {
 
 
     private void showProducts() {
-        System.out.println("PRODUCTS GO HERE");
+        String header[] = {"ID", "DISCOUNT", "IVA", "PVP"};
+        String leftAling = "| %-5s | %-15s | %-15s | %-15s |\n";
+        ArrayList<String[]> temp = ProductService.getProducts();
+        if(temp == null){
+            return;
+        }
+        String separator = "+-------+-----------------+-----------------+-----------------+";
+        System.out.println(separator);
+        System.out.format(leftAling, header);
+        System.out.println(separator);
+        for(String[] t : temp){
+            System.out.format(leftAling, t[0], t[1], t[2], t[3]);
+            System.out.println(separator);
+        }
     }
 
 }

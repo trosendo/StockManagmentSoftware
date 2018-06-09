@@ -1,6 +1,6 @@
 package io.altar.jseproject.model;
 
-public class Entity {
+public abstract class Entity {
     // TODO: 6/8/2018
     long id;
 
@@ -11,4 +11,6 @@ public class Entity {
     public long getID(){
         return id;
     }
+
+    public abstract boolean saveToDB();
 }

@@ -3,14 +3,14 @@ package io.altar.jseproject.textinterface;
 import java.util.Scanner;
 
 public class MainMenu {
-    String menu = "Por favor selecione uma das seguintes opções:\n" +
+    private String menu = "Por favor selecione uma das seguintes opções:\n" +
                         "1) Listar produtos\n" +
                         "2) Listar prateleiras\n" +
                         "3) Sair";
-    final int ERROR = -1;
-    final int LIST_PRODUCTS = 1;
-    final int LIST_SHELVES = 2;
-    final int EXIT = 3;
+    private final int ERROR = -1;
+    private final int LIST_PRODUCTS = 1;
+    private final int LIST_SHELVES = 2;
+    private final int EXIT = 3;
     Scanner input;
 
     MainMenu(){
@@ -40,12 +40,12 @@ public class MainMenu {
         System.exit(0);
     }
 
-    void productMenu(){
+    private void productMenu(){
         MainProduct menu = new MainProduct();
         menu.run();
     }
 
-    void shelfMenu(){
+    private void shelfMenu(){
         MainShelf menu = new MainShelf();
         menu.run();
     }

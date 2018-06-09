@@ -3,18 +3,18 @@ package io.altar.jseproject.textinterface;
 import java.util.Scanner;
 
 public class MainShelf {
-    String menu =  "Por favor selecione uma das seguintes opções:\n" +
+    private String menu =  "Por favor selecione uma das seguintes opções:\n" +
                         "1) Criar nova prateleira\n" +
                         "2) Editar uma prateleira existente\n" +
                         "3) Consultar o detalhe de uma prateleira\n" +
                         "4) Remover uma prateleira\n" +
                         "5) Voltar ao ecrã anterior";
-    final int ERROR = -1;
-    final int CREATE_SHELF = 1;
-    final int EDIT_SHELF = 2;
-    final int SHELF_DETAILS = 3;
-    final int REMOVE_SHELF = 4;
-    final int LAST_MENU = 5;
+    private final int ERROR = -1;
+    private final int CREATE_SHELF = 1;
+    private final int EDIT_SHELF = 2;
+    private final int SHELF_DETAILS = 3;
+    private final int REMOVE_SHELF = 4;
+    private final int LAST_MENU = 5;
     Scanner input;
 
     MainShelf(){

@@ -11,17 +11,21 @@ public class Product extends Entity{
     double iva;
     double pvp;
 
-    public Product(Shelf shelf, int discount, double iva, double pvp) {
-//        idGenerator = new IDGenerator();
-//        id = idGenerator.increment();
-
+    public Product(int discount, double iva, double pvp){
         shelvesList = new ArrayList<>();
-        shelvesList.add(shelf);
-
         this.discount = discount;
         this.iva = iva;
         this.pvp = pvp;
     }
+
+//    public Product(Shelf shelf, int discount, double iva, double pvp) {
+//        shelvesList = new ArrayList<>();
+//        shelvesList.add(shelf);
+//
+//        this.discount = discount;
+//        this.iva = iva;
+//        this.pvp = pvp;
+//    }
 
 //    public int getId() {
 //        return id;
@@ -57,5 +61,10 @@ public class Product extends Entity{
 
     public void setPVP(double pvp) {
         this.pvp = pvp;
+    }
+
+    @Override
+    public boolean saveToDB() {
+        return false;
     }
 }
