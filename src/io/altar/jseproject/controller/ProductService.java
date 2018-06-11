@@ -6,9 +6,9 @@ import io.altar.jseproject.repositories.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 public class ProductService {
-    // TODO: 6/8/2018
 
     static EntityRepository<Product> productDB = ProductRepository.getInstance();
 
@@ -20,15 +20,20 @@ public class ProductService {
         }
         for(Product p : c){
             String temp[] = {Long.toString(p.getID()), Integer.toString(p.getDiscount()),
-                    Double.toString(p.getIVA()), Double.toString(p.getPVP())};
+                    Double.toString(p.getIVA()), Double.toString(p.getPVP()), p.getShelvesList()};
             data.add(temp);
         }
         return data;
     }
 
-    public static boolean createProduct(int discount, double iva, double pvp){
-        Product p = new Product(discount, iva, pvp);
-        return productDB.storeEntity(p) != null;
+    public static long createProduct(int discount, double iva, double pvp, long shelfID){
+        Product p = new Product(discount, iva, pvp, shelfID);
+        if(productDB.storeEntity(p) != null){
+            p.addShelf(shelfID);
+            return p.getID();
+        } else {
+            return -1;
+        }
     }
 
     public static String[] getProductDetails(long id){
@@ -47,6 +52,17 @@ public class ProductService {
         p.setPVP(pvp);
 
         return p.getDiscount() == discount && p.getIVA() == iva && p.getPVP() == pvp;
+    }
+
+    public static void addShelfToProduct(long productID, long shelfID){
+        Product p = productDB.getEntity(productID);
+        if(p != null) {
+            p.addToShelf(shelfID);
+        }
+    }
+
+    public static Set<Long> getIDs(){
+        return productDB.getKeys();
     }
 
 }

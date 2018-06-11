@@ -1,5 +1,7 @@
 package io.altar.jseproject.model;
 
+import io.altar.jseproject.controller.ProductService;
+
 import java.util.ArrayList;
 
 public class Shelf extends Entity {
@@ -7,25 +9,20 @@ public class Shelf extends Entity {
 //    IDGenerator idGenerator;
 //    int id;
     int capacity;
-    Product product;
+    long productID;
     double dailyRent;
 
-    public Shelf(){
-        capacity = 0;
-        dailyRent = 0.0;
-    }
-
-    public Shelf(int capacity, Product product, double dailyRent) {
-//        idGenerator = new IDGenerator();
-//        id = idGenerator.increment();
+    public Shelf(int capacity, double dailyRent, long productID) {
         this.capacity = capacity;
-        this.product = product;
         this.dailyRent = dailyRent;
+        if(productID != -1){
+            this.productID = productID;
+        }
     }
 
-//    void setID(long id){
-//
-//    }
+    public void addShelfToProduct(long productID){
+        ProductService.addShelfToProduct(productID, getID());
+    }
 
     public int getCapacity() {
         return capacity;
@@ -35,12 +32,16 @@ public class Shelf extends Entity {
         this.capacity = capacity;
     }
 
-    public Product getProduct() {
-        return product;
+    public long getProduct() {
+        if(productID > 0){
+            return productID;
+        } else {
+            return -1;
+        }
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(long productID) {
+        this.productID = productID;
     }
 
     public double getDailyRent() {
@@ -49,10 +50,5 @@ public class Shelf extends Entity {
 
     public void setDailyRent(double dailyRent) {
         this.dailyRent = dailyRent;
-    }
-
-    @Override
-    public boolean saveToDB() {
-        return false;
     }
 }

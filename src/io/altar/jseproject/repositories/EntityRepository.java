@@ -4,6 +4,7 @@ import io.altar.jseproject.model.Entity;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 public abstract class EntityRepository<T extends Entity> {
     // TODO: 6/8/2018
@@ -38,5 +39,8 @@ public abstract class EntityRepository<T extends Entity> {
         return database.remove(id); // if no entity is found this returns null
     }
 
+    public Set<Long> getKeys(){
+        return database.keySet();
+    }
 
 }

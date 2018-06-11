@@ -1,11 +1,13 @@
 package io.altar.jseproject.textinterface;
 
 import io.altar.jseproject.controller.ProductService;
+import io.altar.jseproject.controller.ShelfService;
+import io.altar.jseproject.model.Shelf;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MainProduct {
+public class ProductMenu extends Menu{
 
     private final String menu = "Por favor selecione uma das seguintes opções:\n" +
                         "1) Criar novo produto\n" +
@@ -21,7 +23,7 @@ public class MainProduct {
     private final int LAST_MENU = 5;
     Scanner input;
 
-    MainProduct(){
+    ProductMenu(){
         input = new Scanner(System.in);
     }
 
@@ -62,7 +64,13 @@ public class MainProduct {
         double iva = input.nextDouble();
         System.out.print("Inserir PVP: ");
         double pvp = input.nextDouble();
-        if(ProductService.createProduct(d, iva, pvp)){
+        input.nextLine();
+        System.out.print("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ");
+        String temp = input.nextLine();
+        long shelfID = assertExistence(temp, ShelfService.getIDs());
+        System.out.println(shelfID + " exists (-1 means doesn't exists)");
+        long result = ProductService.createProduct(d, iva, pvp, shelfID);
+        if(result != -1){
             System.out.println("PRODUCT SUCCESSFULLY ADDED");
         } else {
             System.out.println("**********ERROR**********");
@@ -86,6 +94,7 @@ public class MainProduct {
         int currentDiscount = Integer.parseInt(arr[0]);
         double currentIVA = Double.parseDouble(arr[1]);
         double currentPVP = Double.parseDouble(arr[2]);
+
         System.out.format("Desconto atual é %d. Mudar para [vazio deixa o valor autal]: ", currentDiscount);
         String scan = input.nextLine();
         int discount = (scan.equals("")) ? currentDiscount : Integer.parseInt(scan);
@@ -117,20 +126,22 @@ public class MainProduct {
 
 
     private void showProducts() {
-        String header[] = {"ID", "DISCOUNT", "IVA", "PVP"};
-        String leftAlign = "| %-5s | %-15s | %-15s | %-15s |\n";
+        String header[] = {"ID", "DESCONTO", "IVA", "PVP", "PRATELEIRA"};
+        String leftAlign = "| %-5s | %-15s | %-15s | %-15s | %-15s |\n";
         ArrayList<String[]> temp = ProductService.getProducts();
         if(temp == null){
+            System.out.println("Não há produtos no sistema!");
             return;
         }
-        String separator = "+-------+-----------------+-----------------+-----------------+";
+        String separator = "+-------+-----------------+-----------------+-----------------+-----------------+";
         System.out.println(separator);
         System.out.format(leftAlign, header);
         System.out.println(separator);
         for(String[] t : temp){
-            System.out.format(leftAlign, t[0], t[1], t[2], t[3]);
+            System.out.format(leftAlign, t[0], t[1], t[2], t[3], t[4]);
             System.out.println(separator);
         }
+//        System.out.format("Showing %d products\n", addedProducts.size());
     }
 
 }

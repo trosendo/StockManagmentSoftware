@@ -1,42 +1,42 @@
 package io.altar.jseproject.model;
 
+import io.altar.jseproject.controller.ProductService;
+import io.altar.jseproject.controller.ShelfService;
+
 import java.util.ArrayList;
 
 public class Product extends Entity{
 
 //    IDGenerator idGenerator;
 //    int id;
-    ArrayList<Shelf> shelvesList;
-    int discount;
-    double iva;
-    double pvp;
+    private ArrayList<Long> shelvesList;
+    private int discount;
+    private double iva;
+    private double pvp;
 
-    public Product(int discount, double iva, double pvp){
+    public Product(int discount, double iva, double pvp, long shelfID){
         shelvesList = new ArrayList<>();
         this.discount = discount;
         this.iva = iva;
         this.pvp = pvp;
     }
 
-//    public Product(Shelf shelf, int discount, double iva, double pvp) {
-//        shelvesList = new ArrayList<>();
-//        shelvesList.add(shelf);
-//
-//        this.discount = discount;
-//        this.iva = iva;
-//        this.pvp = pvp;
-//    }
-
-//    public int getId() {
-//        return id;
-//    }
-
-    public ArrayList<Shelf> getShelvesList() {
-        return shelvesList;
+    public String getShelvesList() {
+        String shelves = "";
+        for(long l : shelvesList){
+            shelves += Long.toString(l) + "; ";
+        }
+        return shelves;
     }
 
-    public void setShelvesList(ArrayList<Shelf> shelvesList) {
-        this.shelvesList = shelvesList;
+    public void addShelf(long shelfID){
+        shelvesList.add(shelfID);
+        ShelfService.addProductToShelf(getID(), shelfID);
+    }
+
+    public void addToShelf(long shelfID) {
+        System.out.println("adding " + shelfID);
+        this.shelvesList.add(shelfID);
     }
 
     public int getDiscount() {
@@ -61,10 +61,5 @@ public class Product extends Entity{
 
     public void setPVP(double pvp) {
         this.pvp = pvp;
-    }
-
-    @Override
-    public boolean saveToDB() {
-        return false;
     }
 }

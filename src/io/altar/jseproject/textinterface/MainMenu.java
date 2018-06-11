@@ -41,12 +41,12 @@ public class MainMenu {
     }
 
     private void productMenu(){
-        MainProduct menu = new MainProduct();
+        ProductMenu menu = new ProductMenu();
         menu.run();
     }
 
     private void shelfMenu(){
-        MainShelf menu = new MainShelf();
+        ShelfMenu menu = new ShelfMenu();
         menu.run();
     }
 }
