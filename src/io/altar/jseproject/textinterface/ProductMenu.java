@@ -19,6 +19,9 @@ public class ProductMenu extends Menu{
     private final int PRODUCT_DETAILS = 3;
     private final int REMOVE_PRODUCT = 4;
     private final int LAST_MENU = 5;
+    private String header[] = {"ID", "DESCONTO", "IVA", "PVP", "PRATELEIRA"};
+    private String leftAlign = "| %-5s | %-15s | %-15s | %-15s | %-15s |\n";
+    private String separator = "+-------+-----------------+-----------------+-----------------+-----------------+";
     Scanner input;
 
     ProductMenu(){
@@ -65,8 +68,7 @@ public class ProductMenu extends Menu{
         input.nextLine();
         System.out.print("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ");
         String temp = input.nextLine();
-        long shelfID = assertValidity(temp/*, ShelfService.getIDs()*/);
-//        System.out.println(shelfID + " exists (-1 means doesn't exists)");
+        long shelfID = assertValidity(temp);
         long result = ProductService.createProduct(d, iva, pvp, shelfID);
         if(result != -1){
             System.out.println("PRODUCT SUCCESSFULLY ADDED\n");
@@ -129,21 +131,12 @@ public class ProductMenu extends Menu{
 
 
     private void showProducts() {
-        String header[] = {"ID", "DESCONTO", "IVA", "PVP", "PRATELEIRA"};
-        String leftAlign = "| %-5s | %-15s | %-15s | %-15s | %-15s |\n";
         ArrayList<String[]> temp = ProductService.productsToString();
         if(temp == null){
             System.out.println("\nNão há produtos no sistema!");
             return;
         }
-        String separator = "+-------+-----------------+-----------------+-----------------+-----------------+";
-        System.out.println("\n" + separator);
-        System.out.format(leftAlign, header);
-        System.out.println(separator);
-        for(String[] t : temp){
-            System.out.format(leftAlign, t[0], t[1], t[2], t[3], t[4]);
-            System.out.println(separator);
-        }
+        printTable(header, separator, leftAlign, temp);
         System.out.format("Showing %d products\n", ProductService.addedProducts());
     }
 

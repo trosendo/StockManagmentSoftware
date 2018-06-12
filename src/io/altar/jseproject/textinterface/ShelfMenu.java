@@ -1,6 +1,5 @@
 package io.altar.jseproject.textinterface;
 
-import io.altar.jseproject.controller.ProductService;
 import io.altar.jseproject.controller.ShelfService;
 
 import java.util.ArrayList;
@@ -19,6 +18,9 @@ public class ShelfMenu extends Menu{
     private final int SHELF_DETAILS = 3;
     private final int REMOVE_SHELF = 4;
     private final int LAST_MENU = 5;
+    private String header[] = {"ID", "CAPACIDADE", "PREÇO ALUGUER", "PRODUTO PRESENTE"};
+    private String leftAlign = "| %-5s | %-15s | %-15s | %-16s |\n";
+    private String separator = "+-------+-----------------+-----------------+------------------+";
     Scanner input;
 
     ShelfMenu(){
@@ -75,13 +77,58 @@ public class ShelfMenu extends Menu{
     }
 
     private void editShelf() {
-        // TODO: 6/8/2018
         System.out.println("\nEDIT SHELF MENU");
+        System.out.print("Inserir ID: ");
+        long id = input.nextLong();
+        ////////////////////
+        input.nextLine(); // Previous nextLong does not capture \n so the next nextLine is skipped because it captures the \n
+        //////////////////// this way we clear the input so no other is skipped
+        ////////////////////
+        String arr[] = ShelfService.getShelfDetails(id);
+        if(arr == null){
+            System.out.println("**********NO PRODUCT WITH ID " + id + "**********\n");
+            return;
+        }
+        int currentCapacity = Integer.parseInt(arr[1]);
+        double currentDailyRent = Double.parseDouble(arr[2]);
+        long currentProductID = Long.parseLong(arr[3]);
+
+        System.out.format("Capacidade atual é %d.\nMudar para [vazio deixa o valor autal]: ", currentCapacity);
+        String scan = input.nextLine();
+        int capacity = (scan.equals("")) ? currentCapacity : Integer.parseInt(scan);
+
+        System.out.format("Aluguer diário atual é %f.\nMudar para [vazio deixa o valor autal]: ", currentDailyRent);
+        scan = input.nextLine();
+        double rent = (scan.equals("")) ? currentDailyRent : Double.parseDouble(scan);
+
+        long nextProductID;
+        if(currentProductID != -1){
+            System.out.format("ID do produto atualmente associado é %d. \nMudar para [vazio desassocia o produto]: ", currentProductID);
+        } else {
+            System.out.print("ID do produto a associar: ");
+        }
+        scan = input.nextLine();
+        nextProductID = (scan.equals("")) ? -1 : Long.parseLong(scan);
+
+        if(ShelfService.editShelf(id, capacity, rent, nextProductID)){
+            System.out.println("PRODUCT SUCESSFULLY EDITED\n");
+        } else {
+            System.out.println("**********ERROR EDITING PRODUCT**********\n");
+        }
     }
 
     private void getShelfDetails() {
-        // TODO: 6/8/2018
         System.out.println("\nGET SHELF DETAILS");
+        System.out.print("Inserir ID: ");
+        long id = input.nextLong();
+        ArrayList<String[]> temp = new ArrayList<>(1);
+        String[] arr = ShelfService.getShelfDetails(id);
+        if(arr != null){
+            temp.add(arr);
+            printTable(header, separator, leftAlign, temp);
+        } else {
+            System.out.println("Nenhuma prateleira coincide com o ID inserido!");
+        }
     }
 
     private void removeShelf() {
@@ -91,21 +138,12 @@ public class ShelfMenu extends Menu{
 
 
     private void showShelves() {
-        String header[] = {"ID", "CAPACIDADE", "PREÇO ALUGUER", "PRODUTO PRESENTE"};
-        String leftAlign = "| %-5s | %-15s | %-15s | %-16s |\n";
         ArrayList<String[]> temp = ShelfService.shelvesToString();
         if(temp == null){
             System.out.println("\nNão há prateleiras no sistema!");
             return;
         }
-        String separator = "+-------+-----------------+-----------------+------------------+";
-        System.out.println("\n" + separator);
-        System.out.format(leftAlign, header);
-        System.out.println(separator);
-        for(String[] t : temp){
-            System.out.format(leftAlign, t[0], t[1], t[2], t[3]);
-            System.out.println(separator);
-        }
+        printTable(header, separator, leftAlign, temp);
         System.out.format("Showing %d shelves\n", ShelfService.addedShelves());
 
     }

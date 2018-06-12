@@ -31,11 +31,15 @@ public class Product extends Entity{
         shelvesList.add(shelf);
     }
 
+    public void removeShelf(Shelf shelf){
+        shelvesList.remove(shelf);
+    }
+
     public void setShelves(ArrayList<Shelf> shelves){
-        if(shelves == null){
-            System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
-            return;
-        }
+//        if(shelves == null){
+//            System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
+//            return;
+//        }
         shelvesList.clear();
         shelvesList.addAll(shelves);
     }

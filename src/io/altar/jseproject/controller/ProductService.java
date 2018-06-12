@@ -62,11 +62,13 @@ public class ProductService {
         ArrayList<Shelf> shelves = null;
         if(newShelves != null) {
             shelves = ShelfService.getShelves(newShelves);
-        }
-        p.setShelves(shelves);
-        if(shelves != null){
-            for(Shelf s : shelves){
-                ShelfService.updateShelf(s, p);
+            if(shelves == null){
+                System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
+            } else {
+                p.setShelves(shelves);
+                for(Shelf s : shelves){
+                    ShelfService.updateShelf(s, p);
+                }
             }
         }
         return p.getDiscount() == discount && p.getIVA() == iva && p.getPVP() == pvp;
@@ -86,5 +88,11 @@ public class ProductService {
 
     public static int addedProducts() {
         return productDB.size();
+    }
+
+    public static void removeShelfFromProduct(Product p, Shelf s) {
+        if(p != null) {
+            p.removeShelf(s);
+        }
     }
 }

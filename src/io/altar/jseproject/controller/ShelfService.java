@@ -62,4 +62,37 @@ public class ShelfService {
     public static ArrayList<Shelf> getShelves(String[] ids){
         return shelfDB.getEntities(ids);
     }
+
+    public static String[] getShelfDetails(long id) {
+        Shelf s = shelfDB.getEntity(id);
+        if(s == null){
+            return null;
+        }
+        String arr[] = {Long.toString(s.getID()),
+                        Integer.toString(s.getCapacity()),
+                        Double.toString(s.getDailyRent()),
+                        (s.getProduct() == null) ? "-1" : Long.toString(s.getProduct().getID())};
+        return arr;
+    }
+
+    public static boolean editShelf(long id, int capacity, double rent, long productID) {
+        Shelf s = shelfDB.getEntity(id);
+        s.setCapacity(capacity);
+        s.setDailyRent(rent);
+        if(productID != -1){
+            Product p = ProductService.getProduct(productID);
+            if(p != null){
+                ProductService.removeShelfFromProduct(s.getProduct(), s);
+                s.setProduct(p);
+                ProductService.updateProduct(p, s);
+            } else {
+                System.out.println("*******PRODUTO ASSOCIADO A PRATELEIRA NÃO FOI ALTERADO*******");
+            }
+        } else {
+            ProductService.removeShelfFromProduct(s.getProduct(), s);
+            s.setProduct(null);
+        }
+
+        return false;
+    }
 }
