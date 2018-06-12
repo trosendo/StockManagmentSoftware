@@ -1,42 +1,43 @@
 package io.altar.jseproject.model;
 
-import io.altar.jseproject.controller.ProductService;
-import io.altar.jseproject.controller.ShelfService;
-
 import java.util.ArrayList;
 
 public class Product extends Entity{
 
-//    IDGenerator idGenerator;
-//    int id;
-    private ArrayList<Long> shelvesList;
+    private ArrayList<Shelf> shelvesList;
     private int discount;
     private double iva;
     private double pvp;
 
-    public Product(int discount, double iva, double pvp, long shelfID){
+    public Product(int discount, double iva, double pvp, Shelf shelf){
         shelvesList = new ArrayList<>();
         this.discount = discount;
         this.iva = iva;
         this.pvp = pvp;
+        if(shelf != null){
+            shelvesList.add(shelf);
+        }
     }
 
     public String getShelvesList() {
         String shelves = "";
-        for(long l : shelvesList){
-            shelves += Long.toString(l) + "; ";
+        for(Shelf s : shelvesList){
+            shelves += Long.toString(s.getID()) + "; ";
         }
         return shelves;
     }
 
-    public void addShelf(long shelfID){
-        shelvesList.add(shelfID);
-        ShelfService.addProductToShelf(getID(), shelfID);
+    public void addShelf(Shelf shelf){
+        shelvesList.add(shelf);
     }
 
-    public void addToShelf(long shelfID) {
-        System.out.println("adding " + shelfID);
-        this.shelvesList.add(shelfID);
+    public void setShelves(ArrayList<Shelf> shelves){
+        if(shelves == null){
+            System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
+            return;
+        }
+        shelvesList.clear();
+        shelvesList.addAll(shelves);
     }
 
     public int getDiscount() {
