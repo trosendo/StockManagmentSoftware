@@ -134,6 +134,9 @@ public class ShelfMenu extends Menu{
     private void removeShelf() {
         // TODO: 6/8/2018
         System.out.println("\nREMOVE SHELF");
+        System.out.print("Inserir ID: ");
+        long id = input.nextLong();
+        ShelfService.removeShelf(id);
     }
 
 

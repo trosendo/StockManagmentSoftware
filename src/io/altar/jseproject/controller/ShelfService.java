@@ -85,14 +85,24 @@ public class ShelfService {
                 ProductService.removeShelfFromProduct(s.getProduct(), s);
                 s.setProduct(p);
                 ProductService.updateProduct(p, s);
+                return true;
             } else {
                 System.out.println("*******PRODUTO ASSOCIADO A PRATELEIRA NÃO FOI ALTERADO*******");
+                return true;
             }
         } else {
             ProductService.removeShelfFromProduct(s.getProduct(), s);
             s.setProduct(null);
+            return true;
         }
+    }
 
-        return false;
+    public static void removeShelf(long id) {
+        Shelf s = shelfDB.removeEntity(id);
+        Product p = s.getProduct();
+        if(p != null){
+            p.removeShelf(s);
+        }
+        s = null;
     }
 }

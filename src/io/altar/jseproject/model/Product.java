@@ -8,6 +8,7 @@ public class Product extends Entity{
     private int discount;
     private double iva;
     private double pvp;
+    private String shelves = "---";
 
     public Product(int discount, double iva, double pvp, Shelf shelf){
         shelvesList = new ArrayList<>();
@@ -15,33 +16,41 @@ public class Product extends Entity{
         this.iva = iva;
         this.pvp = pvp;
         if(shelf != null){
+            shelves = Long.toString(shelf.getID());
             shelvesList.add(shelf);
         }
     }
 
-    public String getShelvesList() {
-        String shelves = "";
-        for(Shelf s : shelvesList){
-            shelves += Long.toString(s.getID()) + "; ";
-        }
+    public String getShelvesString() {
         return shelves;
+    }
+
+    public ArrayList<Shelf> getShelvesList(){
+        return shelvesList;
     }
 
     public void addShelf(Shelf shelf){
         shelvesList.add(shelf);
+        computeShelvesString();
     }
 
     public void removeShelf(Shelf shelf){
         shelvesList.remove(shelf);
+        computeShelvesString();
+    }
+
+    public void removeShelves(){
+        shelvesList.clear();
+        shelves = "---";
     }
 
     public void setShelves(ArrayList<Shelf> shelves){
-//        if(shelves == null){
-//            System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
-//            return;
-//        }
+        for(Shelf s : shelvesList){
+            s.setProduct(null);
+        }
         shelvesList.clear();
         shelvesList.addAll(shelves);
+        computeShelvesString();
     }
 
     public int getDiscount() {
@@ -66,5 +75,21 @@ public class Product extends Entity{
 
     public void setPVP(double pvp) {
         this.pvp = pvp;
+    }
+
+    public String[] getDetails(){
+        String[] arr = {Long.toString(getID()),
+                        Integer.toString(getDiscount()),
+                        Double.toString(getIVA()),
+                        Double.toString(getPVP()),
+                        shelves};
+        return arr;
+    }
+
+    public void computeShelvesString(){
+        shelves = Long.toString(shelvesList.get(0).getID());
+        for(int i = 1; i < shelvesList.size(); i++){
+            shelves += ";" + Long.toString(shelvesList.get(i).getID());
+        }
     }
 }

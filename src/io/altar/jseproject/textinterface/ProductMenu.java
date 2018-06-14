@@ -122,6 +122,7 @@ public class ProductMenu extends Menu{
     private void getProductDetails() {
         // TODO: 6/8/2018
         System.out.println("\nGET PRODUCT DETAILS");
+
     }
 
     private void removeProduct() {

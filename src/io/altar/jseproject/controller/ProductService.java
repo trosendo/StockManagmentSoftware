@@ -20,10 +20,10 @@ public class ProductService {
             return null;
         }
         for(Product p : c){
-            String s = p.getShelvesList();
-            String temp[] = {Long.toString(p.getID()), Integer.toString(p.getDiscount()),
-                    Double.toString(p.getIVA()), Double.toString(p.getPVP()), (s.equals("") ? "---" : s)};
-            data.add(temp);
+//            String s = p.getShelvesString();
+//            String temp[] = {Long.toString(p.getID()), Integer.toString(p.getDiscount()),
+//                    Double.toString(p.getIVA()), Double.toString(p.getPVP()), (s.equals("") ? "---" : s)};
+            data.add(p.getDetails());
         }
         return data;
     }
@@ -50,7 +50,7 @@ public class ProductService {
         String arr[] = {Integer.toString(p.getDiscount()),
                 Double.toString(p.getIVA()),
                 Double.toString(p.getPVP()),
-                p.getShelvesList()};
+                p.getShelvesString()};
         return arr;
     }
 
@@ -65,11 +65,21 @@ public class ProductService {
             if(shelves == null){
                 System.out.println("*******PRATELEIRAS DO PRODUTO INALTERADAS*******");
             } else {
-                p.setShelves(shelves);
                 for(Shelf s : shelves){
+                    Product temp = s.getProduct();
+                    if(temp != null){
+                        temp.removeShelf(s);
+                    }
                     ShelfService.updateShelf(s, p);
                 }
+                p.setShelves(shelves);
             }
+        } else {
+            ArrayList<Shelf> arrList = p.getShelvesList();
+            for(Shelf s : arrList){
+                s.setProduct(null);
+            }
+            p.removeShelves();
         }
         return p.getDiscount() == discount && p.getIVA() == iva && p.getPVP() == pvp;
     }
