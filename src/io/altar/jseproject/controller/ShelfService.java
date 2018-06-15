@@ -10,31 +10,30 @@ import java.util.Collection;
 import java.util.Set;
 
 public class ShelfService {
-    // TODO: 6/8/2018
     static EntityRepository<Shelf> shelfDB = ShelfRepository.getInstance();
 
-    public static ArrayList<String[]> shelvesToString(){
+    public static ArrayList<String[]> shelvesToString() {
         Collection<Shelf> collection = shelfDB.getValues();
         ArrayList<String[]> data = new ArrayList<>();
-        if(collection.size() == 0){
+        if (collection.size() == 0) {
             return null;
         }
-        for(Shelf shelf : collection){
+        for (Shelf shelf : collection) {
             String temp[] = {Long.toString(shelf.getID()),
-                            Integer.toString(shelf.getCapacity()),
-                            Double.toString(shelf.getDailyRent()),
-                            (shelf.getProduct() == null) ? "---" : Long.toString(shelf.getProduct().getID())};
+                    Integer.toString(shelf.getCapacity()),
+                    Double.toString(shelf.getDailyRent()),
+                    (shelf.getProduct() == null) ? "---" : Long.toString(shelf.getProduct().getID())};
             data.add(temp);
         }
         return data;
     }
 
-    public static long createShelf(int capacity, double rent, long productID){
+    public static long createShelf(int capacity, double rent, long productID) {
         Product p = null;
         p = ProductService.getProduct(productID);
         Shelf s = new Shelf(capacity, rent, p);
-        if(shelfDB.storeEntity(s) != null){
-            if(p != null){
+        if (shelfDB.storeEntity(s) != null) {
+            if (p != null) {
                 ProductService.updateProduct(p, s);
             }
             return s.getID();
@@ -43,15 +42,15 @@ public class ShelfService {
         }
     }
 
-    public static Set<Long> getIDs(){
+    public static Set<Long> getIDs() {
         return shelfDB.getKeys();
     }
 
-    static Shelf getShelf(long id){
+    static Shelf getShelf(long id) {
         return shelfDB.getEntity(id);
     }
 
-    public static void updateShelf(Shelf s, Product p) {
+    static void updateShelf(Shelf s, Product p) {
         s.setProduct(p);
     }
 
@@ -59,19 +58,19 @@ public class ShelfService {
         return shelfDB.size();
     }
 
-    public static ArrayList<Shelf> getShelves(String[] ids){
+    static ArrayList<Shelf> getShelves(String[] ids) {
         return shelfDB.getEntities(ids);
     }
 
     public static String[] getShelfDetails(long id) {
         Shelf s = shelfDB.getEntity(id);
-        if(s == null){
+        if (s == null) {
             return null;
         }
         String arr[] = {Long.toString(s.getID()),
-                        Integer.toString(s.getCapacity()),
-                        Double.toString(s.getDailyRent()),
-                        (s.getProduct() == null) ? "-1" : Long.toString(s.getProduct().getID())};
+                Integer.toString(s.getCapacity()),
+                Double.toString(s.getDailyRent()),
+                (s.getProduct() == null) ? "-1" : Long.toString(s.getProduct().getID())};
         return arr;
     }
 
@@ -79,9 +78,9 @@ public class ShelfService {
         Shelf s = shelfDB.getEntity(id);
         s.setCapacity(capacity);
         s.setDailyRent(rent);
-        if(productID != -1){
+        if (productID != -1) {
             Product p = ProductService.getProduct(productID);
-            if(p != null){
+            if (p != null) {
                 ProductService.removeShelfFromProduct(s.getProduct(), s);
                 s.setProduct(p);
                 ProductService.updateProduct(p, s);
@@ -100,7 +99,7 @@ public class ShelfService {
     public static void removeShelf(long id) {
         Shelf s = shelfDB.removeEntity(id);
         Product p = s.getProduct();
-        if(p != null){
+        if (p != null) {
             p.removeShelf(s);
         }
         s = null;

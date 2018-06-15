@@ -5,13 +5,13 @@ import io.altar.jseproject.controller.ShelfService;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ShelfMenu extends Menu{
-    private String menu =  "Por favor selecione uma das seguintes opções:\n" +
-                        "1) Criar nova prateleira\n" +
-                        "2) Editar uma prateleira existente\n" +
-                        "3) Consultar o detalhe de uma prateleira\n" +
-                        "4) Remover uma prateleira\n" +
-                        "5) Voltar ao ecrã anterior";
+public class ShelfMenu extends Menu {
+    private String menu = "Por favor selecione uma das seguintes opções:\n" +
+            "1) Criar nova prateleira\n" +
+            "2) Editar uma prateleira existente\n" +
+            "3) Consultar o detalhe de uma prateleira\n" +
+            "4) Remover uma prateleira\n" +
+            "5) Voltar ao ecrã anterior";
     private final int ERROR = -1;
     private final int CREATE_SHELF = 1;
     private final int EDIT_SHELF = 2;
@@ -23,11 +23,11 @@ public class ShelfMenu extends Menu{
     private String separator = "+-------+-----------------+-----------------+------------------+";
     Scanner input;
 
-    ShelfMenu(){
+    ShelfMenu() {
         input = new Scanner(System.in);
     }
 
-    void run(){
+    void run() {
         int op;
         while (true) {
             showShelves();
@@ -41,15 +41,15 @@ public class ShelfMenu extends Menu{
                 input = new Scanner(System.in);
             }
 
-            if(op == CREATE_SHELF) {
+            if (op == CREATE_SHELF) {
                 createShelf();
-            } else if(op == EDIT_SHELF) {
+            } else if (op == EDIT_SHELF) {
                 editShelf();
-            } else if(op == SHELF_DETAILS){
+            } else if (op == SHELF_DETAILS) {
                 getShelfDetails();
-            } else if(op == REMOVE_SHELF){
+            } else if (op == REMOVE_SHELF) {
                 removeShelf();
-            } else if(op == LAST_MENU){
+            } else if (op == LAST_MENU) {
                 break;
             } else {
                 System.out.println("***INVALID INPUT***");
@@ -66,13 +66,13 @@ public class ShelfMenu extends Menu{
         input.nextLine();
         System.out.print("Associar Produto [Vazio se não desejar associar um produto]: ");
         String temp = input.nextLine();
-        long productID = assertValidity(temp);
-        long result = ShelfService.createShelf(capcity, rent, productID);
-        if(result != -1){
-            System.out.println("SHELF SUCCESSFULLY ADDED\n");
-        } else {
-            System.out.println("**********ERROR**********\n");
-        }
+        //long productID = assertValidity(temp);
+        //long result = ShelfService.createShelf(capcity, rent, productID);
+//        if(result != -1){
+//            System.out.println("SHELF SUCCESSFULLY ADDED\n");
+//        } else {
+//            System.out.println("**********ERROR**********\n");
+//        }
 
     }
 
@@ -85,7 +85,7 @@ public class ShelfMenu extends Menu{
         //////////////////// this way we clear the input so no other is skipped
         ////////////////////
         String arr[] = ShelfService.getShelfDetails(id);
-        if(arr == null){
+        if (arr == null) {
             System.out.println("**********NO PRODUCT WITH ID " + id + "**********\n");
             return;
         }
@@ -102,7 +102,7 @@ public class ShelfMenu extends Menu{
         double rent = (scan.equals("")) ? currentDailyRent : Double.parseDouble(scan);
 
         long nextProductID;
-        if(currentProductID != -1){
+        if (currentProductID != -1) {
             System.out.format("ID do produto atualmente associado é %d. \nMudar para [vazio desassocia o produto]: ", currentProductID);
         } else {
             System.out.print("ID do produto a associar: ");
@@ -110,7 +110,7 @@ public class ShelfMenu extends Menu{
         scan = input.nextLine();
         nextProductID = (scan.equals("")) ? -1 : Long.parseLong(scan);
 
-        if(ShelfService.editShelf(id, capacity, rent, nextProductID)){
+        if (ShelfService.editShelf(id, capacity, rent, nextProductID)) {
             System.out.println("PRODUCT SUCESSFULLY EDITED\n");
         } else {
             System.out.println("**********ERROR EDITING PRODUCT**********\n");
@@ -123,16 +123,15 @@ public class ShelfMenu extends Menu{
         long id = input.nextLong();
         ArrayList<String[]> temp = new ArrayList<>(1);
         String[] arr = ShelfService.getShelfDetails(id);
-        if(arr != null){
+        if (arr != null) {
             temp.add(arr);
-            printTable(header, separator, leftAlign, temp);
+            //printTable(header, separator, leftAlign, temp);
         } else {
             System.out.println("Nenhuma prateleira coincide com o ID inserido!");
         }
     }
 
     private void removeShelf() {
-        // TODO: 6/8/2018
         System.out.println("\nREMOVE SHELF");
         System.out.print("Inserir ID: ");
         long id = input.nextLong();
@@ -142,11 +141,11 @@ public class ShelfMenu extends Menu{
 
     private void showShelves() {
         ArrayList<String[]> temp = ShelfService.shelvesToString();
-        if(temp == null){
+        if (temp == null) {
             System.out.println("\nNão há prateleiras no sistema!");
             return;
         }
-        printTable(header, separator, leftAlign, temp);
+        //printTable(header, separator, leftAlign, temp);
         System.out.format("Showing %d shelves\n", ShelfService.addedShelves());
 
     }

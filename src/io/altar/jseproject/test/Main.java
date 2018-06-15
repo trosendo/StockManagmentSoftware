@@ -1,10 +1,11 @@
 package io.altar.jseproject.test;
 
-import io.altar.jseproject.textinterface.TextInterface;
+import io.altar.jseproject.statemachine.StateMachineEngine;
 
 
 public class Main {
     public static void main(String[] args) {
-        TextInterface textInterface = new TextInterface();
+        StateMachineEngine sme = new StateMachineEngine();
+        sme.launchStateMachine();
     }
 }

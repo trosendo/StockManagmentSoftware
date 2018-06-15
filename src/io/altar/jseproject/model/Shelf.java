@@ -9,7 +9,7 @@ public class Shelf extends Entity {
     public Shelf(int capacity, double dailyRent, Product product) {
         this.capacity = capacity;
         this.dailyRent = dailyRent;
-        if(product != null){
+        if (product != null) {
             this.product = product;
         }
     }

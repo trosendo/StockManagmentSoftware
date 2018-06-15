@@ -2,17 +2,16 @@ package io.altar.jseproject.textinterface;
 
 import io.altar.jseproject.controller.ProductService;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ProductMenu extends Menu{
+public class ProductMenu extends Menu {
 
     private final String menu = "Por favor selecione uma das seguintes opções:\n" +
-                        "1) Criar novo produto\n" +
-                        "2) Editar um produto existente\n" +
-                        "3) Consultar o detalhe de um produto\n" +
-                        "4) Remover um produto\n" +
-                        "5) Voltar ao ecrã anterior";
+            "1) Criar novo produto\n" +
+            "2) Editar um produto existente\n" +
+            "3) Consultar o detalhe de um produto\n" +
+            "4) Remover um produto\n" +
+            "5) Voltar ao ecrã anterior";
     private final int ERROR = -1;
     private final int CREATE_PRODUCT = 1;
     private final int EDIT_PRODUCT = 2;
@@ -24,11 +23,11 @@ public class ProductMenu extends Menu{
     private String separator = "+-------+-----------------+-----------------+-----------------+-----------------+";
     Scanner input;
 
-    ProductMenu(){
+    ProductMenu() {
         input = new Scanner(System.in);
     }
 
-    void run(){
+    void run() {
         int op;
         while (true) {
             showProducts();
@@ -42,15 +41,15 @@ public class ProductMenu extends Menu{
                 input = new Scanner(System.in);
             }
 
-            if(op == CREATE_PRODUCT) {
+            if (op == CREATE_PRODUCT) {
                 createProduct();
-            } else if(op == EDIT_PRODUCT) {
+            } else if (op == EDIT_PRODUCT) {
                 editProduct();
-            } else if(op == PRODUCT_DETAILS){
+            } else if (op == PRODUCT_DETAILS) {
                 getProductDetails();
-            } else if(op == REMOVE_PRODUCT){
+            } else if (op == REMOVE_PRODUCT) {
                 removeProduct();
-            } else if(op == LAST_MENU){
+            } else if (op == LAST_MENU) {
                 break;
             } else {
                 System.out.println("**********INVALID INPUT**********");
@@ -59,22 +58,22 @@ public class ProductMenu extends Menu{
     }
 
     private void createProduct() {
-        System.out.print("\nInserir Desconto: ");
-        int d = input.nextInt();
-        System.out.print("Inserir IVA: ");
-        double iva = input.nextDouble();
-        System.out.print("Inserir PVP: ");
-        double pvp = input.nextDouble();
-        input.nextLine();
-        System.out.print("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ");
-        String temp = input.nextLine();
-        long shelfID = assertValidity(temp);
-        long result = ProductService.createProduct(d, iva, pvp, shelfID);
-        if(result != -1){
-            System.out.println("PRODUCT SUCCESSFULLY ADDED\n");
-        } else {
-            System.out.println("**********ERROR**********\n");
-        }
+//        System.out.print("\nInserir Desconto: ");
+//        int d = input.nextInt();
+//        System.out.print("Inserir IVA: ");
+//        double iva = input.nextDouble();
+//        System.out.print("Inserir PVP: ");
+//        double pvp = input.nextDouble();
+//        input.nextLine();
+//        System.out.print("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ");
+//        String temp = input.nextLine();
+//        long shelfID = assertValidity(temp);
+//        long result = ProductService.createProduct(d, iva, pvp, shelfID);
+//        if(result != -1){
+//            System.out.println("PRODUCT SUCCESSFULLY ADDED\n");
+//        } else {
+//            System.out.println("**********ERROR**********\n");
+//        }
     }
 
     private void editProduct() {
@@ -86,7 +85,7 @@ public class ProductMenu extends Menu{
         //////////////////// this way we clear the input so no other is skipped
         ////////////////////
         String arr[] = ProductService.getProductDetails(id);
-        if(arr == null){
+        if (arr == null) {
             System.out.println("**********NO PRODUCT WITH ID " + id + "**********\n");
             return;
         }
@@ -108,11 +107,11 @@ public class ProductMenu extends Menu{
         double pvp = (scan.equals("")) ? currentPVP : Double.parseDouble(scan);
 
         System.out.format("Prateleira/s [%s].\nMudar para [vazio desassocia todas as parteleiras]\n" +
-                                    "[em caso de múltiplas, separar com espaços. Por exemplo: \"1 2 3\"]: ", shelves);
+                "[em caso de múltiplas, separar com espaços. Por exemplo: \"1 2 3\"]: ", shelves);
         scan = input.nextLine();
         String[] newShelves = (scan.equals("")) ? null : scan.split(" ");
 
-        if(ProductService.editProduct(id, discount, iva, pvp, newShelves)){
+        if (ProductService.editProduct(id, discount, iva, pvp, newShelves)) {
             System.out.println("PRODUCT SUCESSFULLY EDITED\n");
         } else {
             System.out.println("**********ERROR EDITING PRODUCT**********\n");
@@ -132,13 +131,13 @@ public class ProductMenu extends Menu{
 
 
     private void showProducts() {
-        ArrayList<String[]> temp = ProductService.productsToString();
-        if(temp == null){
-            System.out.println("\nNão há produtos no sistema!");
-            return;
-        }
-        printTable(header, separator, leftAlign, temp);
-        System.out.format("Showing %d products\n", ProductService.addedProducts());
+//        ArrayList<String[]> temp = ProductService.productsToString();
+//        if(temp == null){
+//            System.out.println("\nNão há produtos no sistema!");
+//            return;
+//        }
+//        printTable(header, separator, leftAlign, temp);
+//        System.out.format("Showing %d products\n", ProductService.addedProducts());
     }
 
 }
