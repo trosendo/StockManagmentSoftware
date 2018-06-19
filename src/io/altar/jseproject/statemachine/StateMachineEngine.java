@@ -42,7 +42,7 @@ public class StateMachineEngine {
 
     private int currentState = 2;
 
-    public StateType nextState(String text) {
+    private StateType nextState(String text) {
         int transitionText = Transition.getTransitionIndex(text);
 
         // In the case of an error the execution should not return to the ErrorState
@@ -54,7 +54,7 @@ public class StateMachineEngine {
         return machineStates[currentState].executeState();
     }
 
-    public void launchStateMachine() {
+    private void launchStateMachine() {
         String transition = null;
 
         while (true) {
@@ -72,6 +72,11 @@ public class StateMachineEngine {
         String txt = input.nextLine();
         System.out.println();
         return txt;
+    }
+
+    public static void main(String[] args) {
+        StateMachineEngine sme = new StateMachineEngine();
+        sme.launchStateMachine();
     }
 
 }

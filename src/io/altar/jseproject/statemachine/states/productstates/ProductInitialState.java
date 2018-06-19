@@ -13,7 +13,7 @@ public class ProductInitialState implements State {
             "3) Consultar o detalhe de um produto\n" +
             "4) Remover um produto\n" +
             "5) Voltar ao ecrã anterior";
-    static final String header[] = {"ID", "DESCONTO", "IVA", "PVP", "PRATELEIRA"};
+    static final String header[] = {"ID", "DESCONTO(%)", "IVA(%)", "PVP(€)", "PRATELEIRA"};
     static final String leftAlign = "| %-5s | %-15s | %-15s | %-15s | %-15s |\n";
     static final String separator = "+-------+-----------------+-----------------+-----------------+-----------------+";
 
@@ -21,7 +21,7 @@ public class ProductInitialState implements State {
     public StateType executeState() {
         ArrayList<String[]> temp = ProductService.productsToString();
         if (temp == null) {
-            System.out.println("\nNão há produtos no sistema!");
+            System.out.println("Não há produtos no sistema!");
             System.out.println(menu);
             return StateType.EVENT_TRANSITION;
         }

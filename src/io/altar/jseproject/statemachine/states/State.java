@@ -3,14 +3,18 @@ package io.altar.jseproject.statemachine.states;
 import java.util.ArrayList;
 
 public interface State {
-    public StateType executeState();
+    StateType executeState();
 
-    default long assertValidity(String temp) {
+    default long assertValidity(String temp) throws NumberFormatException {
         long productID;
         if (temp.equals("")) {
             productID = -1;
         } else {
-            productID = Long.parseLong(temp);
+            try {
+                productID = Long.parseLong(temp);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException();
+            }
         }
         return productID;
     }

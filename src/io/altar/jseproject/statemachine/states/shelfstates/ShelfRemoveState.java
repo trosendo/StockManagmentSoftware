@@ -4,6 +4,7 @@ import io.altar.jseproject.controller.ShelfService;
 import io.altar.jseproject.statemachine.states.State;
 import io.altar.jseproject.statemachine.states.StateType;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ShelfRemoveState implements State {
@@ -12,10 +13,19 @@ public class ShelfRemoveState implements State {
 
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Inserir ID: ");
-        long id = input.nextLong();
+        long id = -1;
+        try {
+            System.out.print("Inserir ID: ");
+            id = input.nextLong();
+        } catch (InputMismatchException e) {
+            // log error
+        }
 
-        ShelfService.removeShelf(id);
+        if(ShelfService.removeShelf(id) != -1){
+            System.out.println("Prateleira removida com sucesso!");
+        } else {
+            System.out.println("Ocurreu um erro! Por favor tente novamente.");
+        }
 
         return StateType.AUTOMATIC_TRANSITION;
     }

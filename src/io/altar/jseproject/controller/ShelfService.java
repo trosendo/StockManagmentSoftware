@@ -2,15 +2,13 @@ package io.altar.jseproject.controller;
 
 import io.altar.jseproject.model.Product;
 import io.altar.jseproject.model.Shelf;
-import io.altar.jseproject.repositories.EntityRepository;
 import io.altar.jseproject.repositories.ShelfRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class ShelfService {
-    static EntityRepository<Shelf> shelfDB = ShelfRepository.getInstance();
+    private static ShelfRepository shelfDB = ShelfRepository.getInstance();
 
     public static ArrayList<String[]> shelvesToString() {
         Collection<Shelf> collection = shelfDB.getValues();
@@ -29,7 +27,7 @@ public class ShelfService {
     }
 
     public static long createShelf(int capacity, double rent, long productID) {
-        Product p = null;
+        Product p;
         p = ProductService.getProduct(productID);
         Shelf s = new Shelf(capacity, rent, p);
         if (shelfDB.storeEntity(s) != null) {
@@ -40,10 +38,6 @@ public class ShelfService {
         } else {
             return -1;
         }
-    }
-
-    public static Set<Long> getIDs() {
-        return shelfDB.getKeys();
     }
 
     static Shelf getShelf(long id) {
@@ -67,15 +61,17 @@ public class ShelfService {
         if (s == null) {
             return null;
         }
-        String arr[] = {Long.toString(s.getID()),
+        return new String[]{Long.toString(s.getID()),
                 Integer.toString(s.getCapacity()),
                 Double.toString(s.getDailyRent()),
                 (s.getProduct() == null) ? "-1" : Long.toString(s.getProduct().getID())};
-        return arr;
     }
 
     public static boolean editShelf(long id, int capacity, double rent, long productID) {
         Shelf s = shelfDB.getEntity(id);
+        if(s == null){
+            return false;
+        }
         s.setCapacity(capacity);
         s.setDailyRent(rent);
         if (productID != -1) {
@@ -96,12 +92,15 @@ public class ShelfService {
         }
     }
 
-    public static void removeShelf(long id) {
+    public static int removeShelf(long id) {
         Shelf s = shelfDB.removeEntity(id);
+        if(s == null){
+            return -1;
+        }
         Product p = s.getProduct();
         if (p != null) {
             p.removeShelf(s);
         }
-        s = null;
+        return 0;
     }
 }

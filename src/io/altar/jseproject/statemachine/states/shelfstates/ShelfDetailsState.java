@@ -5,6 +5,7 @@ import io.altar.jseproject.statemachine.states.State;
 import io.altar.jseproject.statemachine.states.StateType;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ShelfDetailsState implements State {
@@ -13,16 +14,24 @@ public class ShelfDetailsState implements State {
 
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Inserir ID: ");
-        long id = input.nextLong();
+        ArrayList<String[]> temp = null;
+        String[] arr = null;
+        try {
+            System.out.print("Inserir ID: ");
+            long id = input.nextLong();
+            input.nextLine();
+            temp = new ArrayList<>(1);
 
-        ArrayList<String[]> temp = new ArrayList<>(1);
-
-        String[] arr = ShelfService.getShelfDetails(id);
+            arr = ShelfService.getShelfDetails(id);
+        } catch (InputMismatchException e) {
+            // log error
+        }
 
         if (arr != null) {
             temp.add(arr);
             printTable(ShelfInitialState.header, ShelfInitialState.separator, ShelfInitialState.leftAlign, temp);
+            System.out.println("[Enter] para continuar...");
+            input.nextLine();
         } else {
             System.out.println("Nenhuma prateleira coincide com o ID inserido!");
         }
