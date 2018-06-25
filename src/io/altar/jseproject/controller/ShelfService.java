@@ -40,7 +40,7 @@ public class ShelfService {
         }
     }
 
-    static Shelf getShelf(long id) {
+    public static Shelf getShelf(long id) {
         return shelfDB.getEntity(id);
     }
 
@@ -69,7 +69,7 @@ public class ShelfService {
 
     public static boolean editShelf(long id, int capacity, double rent, long productID) {
         Shelf s = shelfDB.getEntity(id);
-        if(s == null){
+        if (s == null) {
             return false;
         }
         s.setCapacity(capacity);
@@ -94,7 +94,7 @@ public class ShelfService {
 
     public static int removeShelf(long id) {
         Shelf s = shelfDB.removeEntity(id);
-        if(s == null){
+        if (s == null) {
             return -1;
         }
         Product p = s.getProduct();

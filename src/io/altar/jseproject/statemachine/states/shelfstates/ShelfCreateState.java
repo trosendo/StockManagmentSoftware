@@ -4,42 +4,26 @@ import io.altar.jseproject.controller.ShelfService;
 import io.altar.jseproject.statemachine.states.State;
 import io.altar.jseproject.statemachine.states.StateType;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 public class ShelfCreateState implements State {
 
     @Override
     public StateType executeState() {
 
-        Scanner input = new Scanner(System.in);
+        int capacity = scan("Inserir Capacidade: ", Integer.class, false);
 
-        long result = -1;
-        try {
-            System.out.print("Inserir Capacidade: ");
-            int capacity = input.nextInt();
+        double rent = scan("Inserir Preço de Aluger (diário): ", Double.class, false);
 
-            System.out.print("Inserir Preço de Aluger (diário): ");
-            double rent = input.nextDouble();
+        String temp = String.valueOf(scan("Associar Produto [Vazio se não desejar associar um produto]: ", Long.class, true));
 
-            input.nextLine(); // clear buffer
+        long productID = assertValidity(temp);
 
-            System.out.print("Associar Produto [Vazio se não desejar associar um produto]: ");
-            String temp = input.nextLine();
-
-            long productID = assertValidity(temp);
-
-            result = ShelfService.createShelf(capacity, rent, productID);
-        } catch (InputMismatchException | NumberFormatException ion) {
-            // log error
-        }
+        long result = ShelfService.createShelf(capacity, rent, productID);
 
         if (result != -1) {
             System.out.println("Prateleira adicionada com sucesso!");
         } else {
             System.out.println("Ocurreu um erro! Por favor tente novamente.");
         }
-
 
         return StateType.AUTOMATIC_TRANSITION;
     }

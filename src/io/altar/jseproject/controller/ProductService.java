@@ -42,7 +42,8 @@ public class ProductService {
         if (p == null) {
             return null;
         }
-        return new String[]{Integer.toString(p.getDiscount()),
+        return new String[]{Long.toString(p.getID()),
+                Integer.toString(p.getDiscount()),
                 Double.toString(p.getIVA()),
                 Double.toString(p.getPVP()),
                 p.getShelvesString()};
@@ -50,7 +51,7 @@ public class ProductService {
 
     public static boolean editProduct(long id, int discount, double iva, double pvp, String[] newShelves) {
         Product p = productDB.getEntity(id);
-        if(p == null){
+        if (p == null) {
             return false;
         }
         p.setDiscount(discount);
@@ -81,7 +82,7 @@ public class ProductService {
         return p.getDiscount() == discount && p.getIVA() == iva && p.getPVP() == pvp;
     }
 
-    static Product getProduct(long productID) {
+    public static Product getProduct(long productID) {
         return productDB.getEntity(productID);
     }
 
@@ -101,7 +102,7 @@ public class ProductService {
 
     public static int removeProduct(long id) {
         Product p = productDB.removeEntity(id);
-        if(p == null){
+        if (p == null) {
             return -1;
         }
         ArrayList<Shelf> shelvesList = p.getShelvesList();

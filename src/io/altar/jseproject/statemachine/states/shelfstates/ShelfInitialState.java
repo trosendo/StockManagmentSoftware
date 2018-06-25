@@ -14,8 +14,8 @@ public class ShelfInitialState implements State {
             "4) Remover uma prateleira\n" +
             "5) Voltar ao ecrã anterior";
     static final String header[] = {"ID", "CAPACIDADE", "PREÇO ALUGUER(€)", "PRODUTO PRESENTE"};
-    static final String leftAlign = "| %-5s | %-15s | %-15s | %-16s |\n";
-    static final String separator = "+-------+-----------------+-----------------+------------------+";
+    static final String leftAlign = "| %-5s | %-15s | %-16s | %-16s |\n";
+    static final String separator = "+-------+-----------------+------------------+------------------+";
 
     @Override
     public StateType executeState() {

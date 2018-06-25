@@ -5,7 +5,6 @@ import io.altar.jseproject.statemachine.states.State;
 import io.altar.jseproject.statemachine.states.StateType;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ShelfDetailsState implements State {
@@ -14,18 +13,10 @@ public class ShelfDetailsState implements State {
 
         Scanner input = new Scanner(System.in);
 
-        ArrayList<String[]> temp = null;
-        String[] arr = null;
-        try {
-            System.out.print("Inserir ID: ");
-            long id = input.nextLong();
-            input.nextLine();
-            temp = new ArrayList<>(1);
+        long id = scan("Inserir ID: ", Long.class, false);
+        ArrayList<String[]> temp = new ArrayList<>(1);
 
-            arr = ShelfService.getShelfDetails(id);
-        } catch (InputMismatchException e) {
-            // log error
-        }
+        String[] arr = ShelfService.getShelfDetails(id);
 
         if (arr != null) {
             temp.add(arr);

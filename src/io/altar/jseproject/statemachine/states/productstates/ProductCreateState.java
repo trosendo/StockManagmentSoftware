@@ -1,46 +1,26 @@
 package io.altar.jseproject.statemachine.states.productstates;
 
 import io.altar.jseproject.controller.ProductService;
-import io.altar.jseproject.model.Product;
 import io.altar.jseproject.statemachine.states.State;
 import io.altar.jseproject.statemachine.states.StateType;
-
-import java.util.Collection;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Scanner;
 
 public class ProductCreateState implements State {
     @Override
     public StateType executeState() {
 
-        Scanner input = new Scanner(System.in);
+        int d = scan("Inserir Desconto: ", Integer.class, false);
 
-        long result = -1;
+        double iva = scan("Inserir IVA: ", Double.class, false);
 
-        try {
-            System.out.print("\nInserir Desconto: ");
-            int d = input.nextInt();
+        double pvp = scan("Inserir PVP: ", Double.class, false);
 
-            System.out.print("Inserir IVA: ");
-            double iva = input.nextDouble();
+        String temp = String.valueOf(scan("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ", Long.class, true));
 
-            System.out.print("Inserir PVP: ");
-            double pvp = input.nextDouble();
+        long shelfID = assertValidity(temp);       // NOT ANYMORE ->   may throw NumberFormatException if user enters non-numeric char
 
-            input.nextLine(); // clear buffer
+        long result = ProductService.createProduct(d, iva, pvp, shelfID);
 
-            System.out.print("Adicionar produto à prateleira (ID) [Vazio se não desejar associar um produto]: ");
-            String temp = input.nextLine();
-
-            long shelfID = assertValidity(temp);
-
-            result = ProductService.createProduct(d, iva, pvp, shelfID); // may throw NumberFormatException if user enters non-numeric char
-        } catch (InputMismatchException | NumberFormatException ion) {
-            //log error
-        }
-
-        if(result != -1){
+        if (result != -1) {
             System.out.println("Produto criado com sucesso!");
         } else {
             System.out.println("Ocurreu um erro! Por favor tente novamente.");
