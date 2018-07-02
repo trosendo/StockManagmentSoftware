@@ -37,26 +37,32 @@ public interface State {
             String value = input.nextLine();
 
             try {
-                if (type == Integer.class) {
-                    if (value.equals("") && canBeEmpty) {
-                        value = "-1";
+                if(type.getSuperclass() == Number.class){
+                    Number val = -1;
+                    if (type == Integer.class) {
+                        if (value.equals("") && canBeEmpty) {
+                            value = "-1";
+                        }
+                        val = Integer.valueOf(value);
+                    } else if (type == Double.class) {
+                        if (value.equals("") && canBeEmpty) {
+                            value = "-1";
+                        }
+                        val = Double.valueOf(value);
+                    } else if (type == Long.class) {
+                        if (value.equals("") && canBeEmpty) {
+                            value = "-1";
+                        }
+                        val = Long.valueOf(value);
+                    } else if (type == Float.class) {
+                        if (value.equals("") && canBeEmpty) {
+                            value = "-1";
+                        }
+                        val = Float.valueOf(value);
                     }
-                    return type.cast(Integer.valueOf(value));
-                } else if (type == Double.class) {
-                    if (value.equals("") && canBeEmpty) {
-                        value = "-1";
+                    if(val.intValue() > 0){
+                        return type.cast(val);
                     }
-                    return type.cast(Double.valueOf(value));
-                } else if (type == Long.class) {
-                    if (value.equals("") && canBeEmpty) {
-                        value = "-1";
-                    }
-                    return type.cast(Long.valueOf(value));
-                } else if (type == Float.class) {
-                    if (value.equals("") && canBeEmpty) {
-                        value = "-1";
-                    }
-                    return type.cast(Float.valueOf(value));
                 } else if (type == String.class) {
                     return type.cast(String.valueOf(value));
                 }
